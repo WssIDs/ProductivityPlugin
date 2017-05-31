@@ -4,10 +4,11 @@ using UnrealBuildTool;
 
 public class ProductivityPlugin : ModuleRules
 {
-	public ProductivityPlugin(TargetInfo Target)
+	public ProductivityPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
-		
-		PublicIncludePaths.AddRange(
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+        PublicIncludePaths.AddRange(
 			new string[] {
 				"ProductivityPlugin/Classes"
 				// ... add public include paths required here ...

@@ -1,7 +1,7 @@
 // Some copyright should be here...
-#include "ProductivityPluginModulePCH.h"
 
 #include "ProductivityPluginStyle.h"
+#include "ProductivityPluginModule.h"
 #include "SlateGameResources.h"
 
 TSharedPtr< FSlateStyleSet > FProductivityPluginStyle::StyleInstance = NULL;
@@ -41,7 +41,22 @@ const FVector2D Icon40x40(40.0f, 40.0f);
 TSharedRef< FSlateStyleSet > FProductivityPluginStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("ProductivityPluginStyle"));
+	
 	Style->SetContentRoot(FPaths::EnginePluginsDir() / TEXT("ProductivityPlugin/Resources"));
+
+	const FString EnginePluginPath = Style->RootToContentDir(TEXT("StaticToInstanced"), TEXT(".png"));
+
+	if (!FPaths::FileExists(EnginePluginPath))
+	{
+		Style->SetContentRoot(FPaths::GamePluginsDir() / TEXT("ProductivityPlugin/Resources"));
+
+		const FString GamePluginPath = Style->RootToContentDir(TEXT("StaticToInstanced"), TEXT(".png"));
+
+		if (!FPaths::FileExists(GamePluginPath))
+		{
+			return Style;
+		}
+	}
 
 	//Style->Set("ButtonIcon", new IMAGE_BRUSH(TEXT("ButtonIcon"), Icon40x40));
 	Style->Set("ProductivityPlugin.StaticToInstanced", new IMAGE_BRUSH(TEXT("StaticToInstanced"), Icon40x40));

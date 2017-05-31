@@ -8,9 +8,11 @@
 UCLASS(config = EditorUserSettings)
 class PRODUCTIVITYPLUGIN_API UProductivityPluginEditorSettings : public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
 public:
+
+	UProductivityPluginEditorSettings();
 
 	UPROPERTY(config, EditAnywhere, Category = ProductivityOptions)
 	bool GroupStaticToInstancedResults;

@@ -58,7 +58,7 @@ struct FAddStaticMeshPayload
 
 struct FProductivityNetworkMessage
 {
-	TEnumAsByte<EProductivityMessageType> Type;
+	EProductivityMessageType Type;
 	FAddStaticMeshPayload Payload;
 
 	FORCEINLINE friend FArchive& operator<<(FArchive& Ar, FProductivityNetworkMessage& NetworkMessage)

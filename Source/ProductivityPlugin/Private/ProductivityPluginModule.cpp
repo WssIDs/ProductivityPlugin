@@ -1,4 +1,5 @@
-#include "ProductivityPluginModulePCH.h"
+
+#include "ProductivityPluginModule.h"
 
 #if WITH_EDITOR
 #include "ISettingsModule.h"
@@ -13,9 +14,16 @@
 #include "ILayers.h"
 #include "LevelEditor.h"
 #include "ScopedTransaction.h"
+#include "Editor/UnrealEd/Public/Editor.h"
+#include "Editor/UnrealEd/Classes/Editor/GroupActor.h"
+#include "Editor/UnrealEd/Public/LevelEditorViewport.h"
+#include "Engine/Selection.h"
+
 #endif
 
+#include "Networking.h"
 #include "ProductivityTypes.h"
+#include "Engine/StaticMeshActor.h"
 
 static const FName ProductivityPluginTabName("ProductivityPlugin");
 
@@ -191,7 +199,7 @@ void FProductivityPluginModule::StaticToInstancedClicked()
 		for (AStaticMeshActor* MeshActor : SelectedSMAs)
 		{
 			FMeshInfo info;
-			info.StaticMesh = MeshActor->GetStaticMeshComponent()->StaticMesh;
+			info.StaticMesh = MeshActor->GetStaticMeshComponent()->GetStaticMesh();
 			MeshActor->GetStaticMeshComponent()->GetUsedMaterials(info.Materials);
 
 			int32 idx = 0;
@@ -242,7 +250,7 @@ void FProductivityPluginModule::StaticToInstancedClicked()
 		for (AInstancedMeshWrapper* IMW : SelectedIMWs)
 		{
 			int32 InstanceCount = IMW->InstancedMeshes->GetInstanceCount();
-			UStaticMesh* IMWMesh = IMW->InstancedMeshes->StaticMesh;
+			UStaticMesh* IMWMesh = IMW->InstancedMeshes->GetStaticMesh();
 			UE_LOG(LogProductivityPlugin, Verbose, TEXT("IMW Mesh: %s"), *IMWMesh->GetFullName());
 			
 			bool bGroupResultingMeshes = FProductivityPluginCommandCallbacks::OnToggleStaticToInstancedResultGroupedEnabled();
@@ -309,7 +317,9 @@ void FProductivityPluginModule::StaticToInstancedClicked()
 		CollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS);
 	}
 }
+
 #endif
+
 
 #if WITH_EDITOR
 
@@ -379,18 +389,19 @@ bool FProductivityPluginModule::SupportsProductivityServer() const
 	return false;
 }
 
-bool FProductivityPluginModule::HandleSettingsSaved()
-{
-	return true;
-}
-
 #if WITH_EDITOR
-bool FProductivityPluginModule::HandleListenerConnectionAccepted(class FSocket* ClientSocket, const FIPv4Endpoint& ClientEndpoint)
+bool FProductivityPluginModule::HandleListenerConnectionAccepted(class FSocket * ClientSocket, const FIPv4Endpoint & ClientEndpoint)
 {
 	PendingClients.Enqueue(ClientSocket);
 	return true;
 }
 #endif
+
+
+bool FProductivityPluginModule::HandleSettingsSaved()
+{
+	return true;
+}
 
 void FProductivityPluginModule::Tick(float DeltaTime)
 {

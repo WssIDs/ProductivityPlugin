@@ -1,9 +1,8 @@
 // Copyright 1998-2015 Epic Games, Inc. All Rights Reserved.
 
-#include "ProductivityPluginModulePCH.h"
+#include "ProductivitySettings.h"
 
 
-UProductivitySettings::UProductivitySettings(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-	, EnableProductivityServer(true)
-{ }
+UProductivitySettings::UProductivitySettings(): EnableProductivityServer(true)
+{
+}

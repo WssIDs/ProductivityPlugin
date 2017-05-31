@@ -13,9 +13,11 @@ UCLASS(config=Engine)
 class UProductivitySettings
 	: public UObject
 {
-	GENERATED_UCLASS_BODY()
+	GENERATED_BODY()
 
 public:
+
+	UProductivitySettings();
 
 	/** Whether the Productivity Server is enabled. */
 	UPROPERTY(config, EditAnywhere, Category = Productivity)

@@ -1,7 +1,7 @@
-#include "ProductivityPluginModulePCH.h"
+
 #include "InstancedMeshWrapper.h"
 
-AInstancedMeshWrapper::AInstancedMeshWrapper(const class FObjectInitializer& PCIP) : Super(PCIP)
+AInstancedMeshWrapper::AInstancedMeshWrapper()
 {
-	InstancedMeshes = PCIP.CreateDefaultSubobject<UInstancedStaticMeshComponent>(this, TEXT("InstancedMeshes_0"));
+	InstancedMeshes = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstancedMeshes_0"));
 }
